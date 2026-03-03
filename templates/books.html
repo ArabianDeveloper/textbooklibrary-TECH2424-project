@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Books{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>📘 Books</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr><th>Title</th><th>Author</th><th>Year</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Introduction to Python</td><td>John Smith</td><td>2024</td><td><button class="btn btn-sm btn-primary">View</button></td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -15,8 +15,8 @@ body {
     margin-bottom: 2rem !important;
 }
 
-/* Centered content container */
-.container {
+/* Utility class for centering specific content */
+.centered-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,4 +44,35 @@ body {
     margin: 0;
     font-size: 0.95rem;
     line-height: 1.6;
+}
+
+/* Navbar and footer (common) */
+.navbar-custom {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff !important;
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: #fff !important;
+}
+
+.footer-section {
+    background: #f8f9fa;
+    padding: 2rem 0;
+    text-align: center;
+    color: #666;
+    margin-top: 60px;
+    border-top: 1px solid #ddd;
 }

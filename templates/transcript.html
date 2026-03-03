@@ -1,514 +1,119 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Transcript - Textbook Library</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
-    <style>
-        /* Navigation Bar */
-        .navbar-custom {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+{% extends "base.html" %}
+{% block title %}Academic Transcript{% endblock %}
 
-        .navbar-custom .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: #fff !important;
-        }
+{% block extra_css %}
+<style>
+    .gpa-summary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 6px 25px rgba(118, 75, 162, 0.2);
+    }
+    .gpa-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+    .gpa-item h3 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        opacity: 0.95;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .gpa-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+    .table-responsive {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .grade-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        font-weight: 600;
+        text-align: center;
+        min-width: 50px;
+    }
+    .grade-a { background: #d4edda; color: #155724; }
+    .grade-b { background: #cfe2ff; color: #084298; }
+    .grade-c { background: #fff3cd; color: #856404; }
+</style>
+{% endblock %}
 
-        .navbar-custom .nav-link {
-            color: rgba(255, 255, 255, 0.8) !important;
-            margin-left: 1rem;
-            transition: color 0.3s ease;
-        }
+{% block content %}
+<div class="page-header">
+    <h1>📜 My Academic Transcript</h1>
+</div>
 
-        .navbar-custom .nav-link:hover {
-            color: #fff !important;
-        }
-
-        /* Page Header */
-        .page-header {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .page-header h1 {
-            color: #764ba2;
-            font-weight: 700;
-        }
-
-        /* GPA Summary Box */
-        .gpa-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 6px 25px rgba(118, 75, 162, 0.2);
-        }
-
-        .gpa-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 2rem;
-            text-align: center;
-        }
-
-        .gpa-item h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            opacity: 0.95;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .gpa-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .gpa-subtext {
-            font-size: 0.85rem;
-            opacity: 0.85;
-            margin-top: 0.5rem;
-        }
-
-        /* Transcript Container */
-        .transcript-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(118, 75, 162, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .transcript-title {
-            color: #764ba2;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        /* Courses Table */
-        .table-responsive {
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .table thead th {
-            padding: 1rem;
-            font-weight: 600;
-            border: none;
-        }
-
-        .table tbody td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-color: #eee;
-        }
-
-        .table tbody tr {
-            transition: background-color 0.3s ease;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(102, 126, 234, 0.05);
-        }
-
-        .course-name {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .course-code {
-            color: #667eea;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .grade-badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 50px;
-        }
-
-        .grade-a {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .grade-b {
-            background: #cfe2ff;
-            color: #084298;
-        }
-
-        .grade-c {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .credits {
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .semester-badge {
-            display: inline-block;
-            padding: 0.3rem 0.7rem;
-            background: rgba(102, 126, 234, 0.2);
-            color: #667eea;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Summary Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .stat-card {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            text-align: center;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            color: #764ba2;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .footer-section {
-            background: #f8f9fa;
-            padding: 2rem 0;
-            text-align: center;
-            color: #666;
-            margin-top: 60px;
-            border-top: 1px solid #ddd;
-        }
-
-        .section-divider {
-            margin: 2rem 0;
-            border: none;
-            border-top: 2px solid #eee;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">📚 Textbook Library</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/landing/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard/">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/timetable/">Timetable</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/transcript/">Transcript</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout/">Logout</a>
-                    </li>
-                </ul>
-            </div>
+<div class="gpa-summary">
+    <div class="gpa-grid">
+        <div class="gpa-item">
+            <h3>Current GPA</h3>
+            <div class="gpa-value">3.72</div>
+            <div class="gpa-subtext">Out of 4.0</div>
         </div>
-    </nav>
-
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="container">
-            <h1>📜 My Academic Transcript</h1>
-            <p class="text-muted mb-0">View your course history and academic performance</p>
+        <div class="gpa-item">
+            <h3>Total Credits</h3>
+            <div class="gpa-value">96</div>
+            <div class="gpa-subtext">Credits Earned</div>
+        </div>
+        <div class="gpa-item">
+            <h3>Courses Completed</h3>
+            <div class="gpa-value">28</div>
+            <div class="gpa-subtext">Total Courses</div>
         </div>
     </div>
+</div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- GPA Summary Section -->
-        <div class="gpa-summary">
-            <div class="gpa-grid">
-                <div class="gpa-item">
-                    <h3>Current GPA</h3>
-                    <div class="gpa-value">3.72</div>
-                    <div class="gpa-subtext">Out of 4.0</div>
-                </div>
-                <div class="gpa-item">
-                    <h3>Total Credits</h3>
-                    <div class="gpa-value">96</div>
-                    <div class="gpa-subtext">Credits Earned</div>
-                </div>
-                <div class="gpa-item">
-                    <h3>Courses Completed</h3>
-                    <div class="gpa-value">28</div>
-                    <div class="gpa-subtext">Total Courses</div>
-                </div>
-                <div class="gpa-item">
-                    <h3>Academic Standing</h3>
-                    <div class="gpa-value">Dean's List</div>
-                    <div class="gpa-subtext">Top Performer</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Transcript Table Container -->
-        <div class="transcript-container">
-            <h2 class="transcript-title">Completed Courses</h2>
-
-            <!-- Semester 1 -->
-            <div>
-                <h5 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">📅 Spring 2024 (Semester 1)</h5>
-                <div class="table-responsive mb-4">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>Course Code</th>
-                                <th>Course Name</th>
-                                <th>Credits</th>
-                                <th>Grade</th>
-                                <th>Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="course-code">CS 101</span></td>
-                                <td><span class="course-name">Introduction to Computer Science</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">12.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 102</span></td>
-                                <td><span class="course-name">Programming Fundamentals</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A-</span></td>
-                                <td class="credits">15.2</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">MATH 101</span></td>
-                                <td><span class="course-name">Calculus I</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-b">B+</span></td>
-                                <td class="credits">14.8</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">ENG 101</span></td>
-                                <td><span class="course-name">Academic Writing</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">12.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">PHY 101</span></td>
-                                <td><span class="course-name">Physics I</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">16.0</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <hr class="section-divider">
-
-            <!-- Semester 2 -->
-            <div>
-                <h5 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">📅 Fall 2024 (Semester 2)</h5>
-                <div class="table-responsive mb-4">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>Course Code</th>
-                                <th>Course Name</th>
-                                <th>Credits</th>
-                                <th>Grade</th>
-                                <th>Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="course-code">CS 201</span></td>
-                                <td><span class="course-name">Data Structures</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">16.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 202</span></td>
-                                <td><span class="course-name">Object-Oriented Programming</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">16.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">MATH 201</span></td>
-                                <td><span class="course-name">Discrete Mathematics</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-b">B+</span></td>
-                                <td class="credits">11.1</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 203</span></td>
-                                <td><span class="course-name">Web Development Basics</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">12.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">HIST 101</span></td>
-                                <td><span class="course-name">World History</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-b">B</span></td>
-                                <td class="credits">9.0</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <hr class="section-divider">
-
-            <!-- Semester 3 -->
-            <div>
-                <h5 style="color: #667eea; font-weight: 700; margin-bottom: 1rem;">📅 Spring 2025 (Semester 3)</h5>
-                <div class="table-responsive mb-4">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>Course Code</th>
-                                <th>Course Name</th>
-                                <th>Credits</th>
-                                <th>Grade</th>
-                                <th>Points</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="course-code">CS 301</span></td>
-                                <td><span class="course-name">Database Systems</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A-</span></td>
-                                <td class="credits">15.2</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 302</span></td>
-                                <td><span class="course-name">Software Engineering</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">16.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 303</span></td>
-                                <td><span class="course-name">Computer Networks</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">12.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 304</span></td>
-                                <td><span class="course-name">Artificial Intelligence Intro</span></td>
-                                <td class="credits">4</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">16.0</td>
-                            </tr>
-                            <tr>
-                                <td><span class="course-code">CS 305</span></td>
-                                <td><span class="course-name">Advanced Web Development</span></td>
-                                <td class="credits">3</td>
-                                <td><span class="grade-badge grade-a">A</span></td>
-                                <td class="credits">12.0</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Summary Statistics -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Average Grade</div>
-                    <div class="stat-value">A-</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Total Credits Completed</div>
-                    <div class="stat-value">96</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Quality Points</div>
-                    <div class="stat-value">357.3</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Courses Completed</div>
-                    <div class="stat-value">28</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Request Options -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="info-box">
-                    <h5 style="color: #764ba2;">Transcript Options</h5>
-                    <p style="margin-bottom: 1rem;">Download or print your official transcript for external purposes.</p>
-                    <button class="btn btn-primary me-2">📥 Download Transcript</button>
-                    <button class="btn btn-secondary me-2">🖨️ Print Transcript</button>
-                    <button class="btn btn-info">📧 Email Transcript</button>
-                </div>
-            </div>
-        </div>
+<div class="transcript-container">
+    <h2 class="transcript-title">Completed Courses</h2>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>CS 101</td>
+                    <td>Introduction to Computer Science</td>
+                    <td>3</td>
+                    <td><span class="grade-badge grade-a">A</span></td>
+                </tr>
+                <tr>
+                    <td>CS 102</td>
+                    <td>Programming Fundamentals</td>
+                    <td>4</td>
+                    <td><span class="grade-badge grade-a">A-</span></td>
+                </tr>
+                <tr>
+                    <td>MATH 101</td>
+                    <td>Calculus I</td>
+                    <td>4</td>
+                    <td><span class="grade-badge grade-b">B+</span></td>
+                </tr>
+                <tr>
+                    <td>ENG 101</td>
+                    <td>Academic Writing</td>
+                    <td>3</td>
+                    <td><span class="grade-badge grade-a">A</span></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <!-- Footer -->
-    <div class="footer-section">
-        <div class="container">
-            <p style="margin-bottom: 0.5rem;">© 2026 Textbook Library Management System</p>
-            <p style="margin: 0; font-size: 0.9rem;">All rights reserved | <a href="#" style="color: #667eea;">Privacy Policy</a> | <a href="#" style="color: #667eea;">Terms of Service</a></p>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>
+</div>
+{% endblock %}
