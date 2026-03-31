@@ -28,15 +28,16 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{% url 'manage_students' %}" class="sidebar-link">
+                        <i class="bi bi-person-plus me-2"></i>
+                        <span class="menu-text">Manage Students</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="{% url 'signout' %}" class="sidebar-link">
                         <i class="bi bi-box-arrow-right me-2"></i>
                         <span class="menu-text">Sign out</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'newstudent' %}" class="sidebar-link">
-                        <i class="bi bi-person-plus me-2"></i>
-                        <span class="menu-text">New Student</span>
                     </a>
                 </li>
             </ul>

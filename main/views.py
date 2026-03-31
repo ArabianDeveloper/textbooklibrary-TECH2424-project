@@ -50,4 +50,17 @@ def newstudent(request):
         student = Student(name=name, email=email, phone=phone, address=address,
         cohort=cohort, department=department, major=major)
         student.save()
+        return redirect("manage_students")
     return render(request, 'dashboard/new-student.html')
+
+def manage_students(request):
+    students = Student.objects.all()
+    return render(request, 'dashboard/manage-students.html', {"students": students})
+
+def deletestudent(request, student_name):
+    try:
+        student = Student.objects.get(name=student_name)
+        student.delete()
+    except Student.DoesNotExist:
+        pass
+    return redirect("manage_students")
