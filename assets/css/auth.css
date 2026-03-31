@@ -1,0 +1,139 @@
+body{
+    min-height:100vh;
+    margin:0;
+    font-family:system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background:linear-gradient(-45deg,#4e73df,#1cc88a,#36b9cc,#224abe);
+    background-size:400% 400%;
+    animation:bgMove 15s ease infinite;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.auth-wrapper{
+    width:900px;
+    max-width:100%;
+    background:#ffffff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 20px 45px rgba(0,0,0,.25);
+}
+
+.auth-left{
+    background:linear-gradient(135deg,#1f4db8,#12327d);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding:40px 30px;
+    text-align:center;
+}
+
+.auth-left h2{
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.auth-left p{
+    margin:0;
+    opacity:.9;
+}
+
+.auth-right{
+    padding:40px;
+    background:#fff;
+}
+
+.auth-header{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.auth-logo{
+    width:88px;
+    height:88px;
+    object-fit:contain;
+    margin-bottom:12px;
+}
+
+.brand{
+    font-weight:700;
+    margin-bottom:6px;
+    color:#1f2937;
+}
+
+.brand-subtitle{
+    color:#6b7280;
+    font-size:.95rem;
+    margin:0;
+}
+
+.input-group-text{
+    background:#f3f4f6;
+    border-right:none;
+}
+
+.form-control{
+    border-left:none;
+}
+
+.form-control:focus{
+    box-shadow:none;
+    border-color:#86b7fe;
+}
+
+.input-group:focus-within .input-group-text{
+    border-color:#86b7fe;
+}
+
+.btn-primary{
+    background:linear-gradient(45deg,#4e73df,#224abe);
+    border:none;
+}
+
+.btn-primary:hover{
+    background:linear-gradient(45deg,#4366c7,#1d3ea8);
+}
+
+.btn-success{
+    background:linear-gradient(45deg,#1cc88a,#169b6b);
+    border:none;
+}
+
+.btn-success:hover{
+    background:linear-gradient(45deg,#18b57c,#13855c);
+}
+
+.auth-links a{
+    text-decoration:none;
+}
+
+.auth-links a:hover{
+    text-decoration:underline;
+}
+
+.toggle-password{
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+    .auth-wrapper{
+        width:100%;
+    }
+
+    .auth-left{
+        display:none;
+    }
+
+    .auth-right{
+        padding:30px 22px;
+    }
+}
