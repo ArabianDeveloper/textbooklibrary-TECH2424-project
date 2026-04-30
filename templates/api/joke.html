@@ -22,7 +22,7 @@
 
             <ul class="sidebar-menu list-unstyled">
                 <li>
-                    <a href="{% url 'index' %}" class="sidebar-link active">
+                    <a href="{% url 'index' %}" class="sidebar-link">
                         <i class="bi bi-house-door me-2"></i>
                         <span class="menu-text">Home</span>
                     </a>
@@ -35,8 +35,8 @@
                 </li>
 
                 <li>
-                    <a href="{% url 'joke' %}" class="sidebar-link">
-                        <i class="bi bi-house-door me-2"></i>
+                    <a href="{% url 'joke' %}" class="sidebar-link active">
+                        <i class="bi bi-lightning-charge me-2"></i>
                         <span class="menu-text">Random Joke</span>
                     </a>
                 </li>
@@ -87,10 +87,37 @@
 
             <!-- Empty Content -->
             <main class="content-area">
-                <div class="content-placeholder">
-                    <h3>Empty Dashboard Layout</h3>
-                    <p>Your page content will go here later.</p>
+                <div class="joke-container">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <h4 class="card-title mb-4">Select Joke Type</h4>
+                            <form method="GET" class="joke-form">
+                                <div class="mb-3">
+                                    <label for="jokeType" class="form-label">Choose a category:</label>
+                                    <select id="jokeType" name="type" class="form-select form-select-lg">
+                                        <option value="random">Random Joke</option>
+                                        {% for type in types %}
+                                            <option value="{{ type }}">{{ type|capfirst }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-lightning-charge me-2"></i>Get Joke
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
+                {% if joke %}
+                    <div class="joke-result mt-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body p-4">
+                                <h2>{{ joke.setup }}</h2>
+                                <h4>{{ joke.punchline }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </main>
 
         </div>
